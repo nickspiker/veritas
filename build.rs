@@ -1,21 +1,24 @@
 // Build script for Veritas
 //
-// Links against libspirix_hip.so (if available)
+// Links against libspirix_hip.so (if available) or OpenCL
 
 use std::env;
 use std::path::PathBuf;
 
 fn main() {
-    // Tell cargo to look for HIP library in gpu/hip directory
-    let manifest_dir = env::var("CARGO_MANIFEST_DIR").unwrap();
-    let hip_lib_dir = PathBuf::from(&manifest_dir).join("gpu/hip");
+    // Only link HIP if not using OpenCL feature
+    if env::var("CARGO_FEATURE_OPENCL").is_err() {
+        // Tell cargo to look for HIP library in gpu/hip directory
+        let manifest_dir = env::var("CARGO_MANIFEST_DIR").unwrap();
+        let hip_lib_dir = PathBuf::from(&manifest_dir).join("gpu/hip");
 
-    println!("cargo:rustc-link-search=native={}", hip_lib_dir.display());
+        println!("cargo:rustc-link-search=native={}", hip_lib_dir.display());
 
-    // Try to link against HIP library (optional - won't fail if not built)
-    println!("cargo:rustc-link-lib=dylib=spirix_hip");
+        // Try to link against HIP library (optional - won't fail if not built)
+        println!("cargo:rustc-link-lib=dylib=spirix_hip");
 
-    // Tell cargo to rerun if the HIP library changes
-    println!("cargo:rerun-if-changed=gpu/hip/libspirix_hip.so");
-    println!("cargo:rerun-if-changed=gpu/hip/spirix_matmul.hip");
+        // Tell cargo to rerun if the HIP library changes
+        println!("cargo:rerun-if-changed=gpu/hip/libspirix_hip.so");
+        println!("cargo:rerun-if-changed=gpu/hip/spirix_matmul.hip");
+    }
 }
