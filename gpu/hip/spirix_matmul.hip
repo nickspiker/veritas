@@ -53,17 +53,20 @@ __device__ inline void spirix_mul(
         return;
     }
 
-    // Count leading zeros to normalize
-    int leading_zeros = __clz(frac_product < 0 ? ~frac_product : frac_product);
+    // Count leading ones/zeros to normalize
+    int leading = __clz(frac_product < 0 ? ~frac_product : frac_product);
 
-    // Shift to normalize (align MSB)
-    int32_t normalized = frac_product << leading_zeros;
+    // expo_adjust = leading - 2 (matches CPU implementation)
+    // shift = expo_adjust + 1 = leading - 1
+    int shift = leading - 1;
+    int32_t normalized = frac_product << shift;
 
     // Extract top 16 bits as fraction
     *c_frac = (int16_t)(normalized >> 16);
 
-    // Adjust exponent for normalization
-    *c_exp = (int16_t)(exp_sum - leading_zeros);
+    // Adjust exponent: exp_sum - (leading - 2) = exp_sum - leading + 2
+    int expo_adjust = leading - 2;
+    *c_exp = (int16_t)(exp_sum - expo_adjust);
 
     // Check for vanished (exponent underflow)
     if (exp_sum < -32768) {
