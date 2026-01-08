@@ -1,0 +1,44 @@
+[package]
+name = "veritas"
+version = "0.1.0"
+edition = "2021"
+authors = ["Nick Spiker"]
+description = "Digital Intelligence thru Verified Computation"
+license = "Custom"
+
+[dependencies]
+# Numeric foundation - Spirix (two's complement floats)
+spirix = { path = "../spirix" }
+
+# VSF for verified persistence
+vsf = { path = "../vsf", features = ["crypto"] }
+
+# Basecalc for arbitrary precision (when Spirix isn't enough)
+# We'll integrate this via FFI or direct inclusion later
+
+# Cryptography
+blake3 = "1.5"
+ed25519-dalek = "2.1"
+
+# Utilities
+thiserror = "1.0"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+
+# ML framework (Candle - Rust native, CPU for now)
+candle-core = "0.8"
+candle-nn = "0.8"
+rand = "0.8"
+
+[dev-dependencies]
+criterion = "0.5"
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+panic = "abort"
+strip = true
+
+[profile.bench]
+inherits = "release"
