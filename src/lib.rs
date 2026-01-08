@@ -38,6 +38,7 @@ pub mod persistence;
 pub mod symbolic;
 pub mod training;
 pub mod verification;
+pub mod gpu;
 
 pub mod error;
 pub use error::{Result, VeritasError};
