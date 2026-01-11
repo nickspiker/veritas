@@ -21,11 +21,11 @@ fn main() {
 
     // Try a small test first
     let test_a = Tensor::new(
-        vec![ScalarF4E4::from(1.0); 4],
+        vec![ScalarF4E4::ONE; 4],
         vec![2, 2],
     );
     let test_b = Tensor::new(
-        vec![ScalarF4E4::from(2.0); 4],
+        vec![ScalarF4E4::from(2u8); 4],
         vec![2, 2],
     );
 

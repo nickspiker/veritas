@@ -1,1 +1,40 @@
 /target
+
+# Rust build artifacts
+**/*.rs.bk
+*.pdb
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# GPU build artifacts
+*.o
+*.so
+*.a
+*.wasm
+*.bin
+*.disasm
+*.s
+gpu/hip/*.o
+gpu/hip/*.so
+gpu/hip/*.bin
+gpu/hip/*.disasm
+gpu/hip/*.s
+gpu/hip/amdgpu-install*.deb
+
+# Temporary files
+/tmp/
+*.tmp
+verify_code_temp.*
+
+# Test outputs
+test_results/
+benchmarks/

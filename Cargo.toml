@@ -24,6 +24,7 @@ ed25519-dalek = "2.1"
 thiserror = "1.0"
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
+regex = "1.10"
 
 # ML framework (Candle - Rust native, CPU for now)
 candle-core = "0.8"
@@ -38,6 +39,7 @@ opencl = ["ocl"]
 
 [dev-dependencies]
 criterion = "0.5"
+proptest = "1.4"
 
 [profile.release]
 opt-level = 3
@@ -48,3 +50,23 @@ strip = true
 
 [profile.bench]
 inherits = "release"
+
+[[example]]
+name = "gpu_in_place_ops_bench"
+path = "examples/gpu_in_place_ops_bench.rs"
+
+# [[bench]]
+# name = "spirix_vs_ieee"
+# harness = false
+
+# [[bench]]
+# name = "sqrt_lut_vs_newton"
+# harness = false
+
+# [[bench]]
+# name = "sqrt_all_methods"
+# harness = false
+
+# [[bench]]
+# name = "sqrt_correctness_check"
+# harness = false

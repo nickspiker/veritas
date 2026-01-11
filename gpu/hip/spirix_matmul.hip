@@ -18,6 +18,10 @@
 #include <hip/hip_runtime.h>
 #include <stdint.h>
 
+// Spirix constants
+#define AMBIGUOUS_EXPONENT -32768  // i16::MIN
+#define UNDEFINED_PREFIX -32768
+
 /**
  * Device function: Spirix multiply
  *
@@ -49,7 +53,7 @@ __device__ inline void spirix_mul(
     if (frac_product == 0) {
         // Zero result
         *c_frac = 0;
-        *c_exp = 0;
+        *c_exp = AMBIGUOUS_EXPONENT;
         return;
     }
 
@@ -108,47 +112,61 @@ __device__ inline void spirix_add(
         return;
     }
 
-    // Align exponents (shift fraction with smaller exponent)
-    int16_t result_frac;
-    int16_t result_exp;
-
+    // Determine which has larger exponent
+    int16_t big_frac, small_frac, big_exp, small_exp;
     if (a_exp > b_exp) {
-        // a is larger, shift b
-        int shift = a_exp - b_exp;
-        if (shift > 15) {
-            // b is negligible
-            *c_frac = a_frac;
-            *c_exp = a_exp;
-            return;
-        }
-        int32_t b_shifted = (int32_t)b_frac >> shift;
-        int32_t sum = (int32_t)a_frac + b_shifted;
-        result_frac = (int16_t)sum;  // May overflow, that's fine
-        result_exp = a_exp;
-    } else if (b_exp > a_exp) {
-        // b is larger, shift a
-        int shift = b_exp - a_exp;
-        if (shift > 15) {
-            // a is negligible
-            *c_frac = b_frac;
-            *c_exp = b_exp;
-            return;
-        }
-        int32_t a_shifted = (int32_t)a_frac >> shift;
-        int32_t sum = a_shifted + (int32_t)b_frac;
-        result_frac = (int16_t)sum;
-        result_exp = b_exp;
+        big_frac = a_frac;
+        big_exp = a_exp;
+        small_frac = b_frac;
+        small_exp = b_exp;
     } else {
-        // Same exponent, just add
-        int32_t sum = (int32_t)a_frac + (int32_t)b_frac;
-        result_frac = (int16_t)sum;
-        result_exp = a_exp;
+        big_frac = b_frac;
+        big_exp = b_exp;
+        small_frac = a_frac;
+        small_exp = a_exp;
     }
 
-    // Normalize if needed
-    // (For now, simple version - full implementation would check overflow)
-    *c_frac = result_frac;
-    *c_exp = result_exp;
+    int exp_diff = big_exp - small_exp;
+    if (exp_diff > 15) {
+        // Small value is negligible
+        *c_frac = big_frac;
+        *c_exp = big_exp;
+        return;
+    }
+
+    // Shift big fraction left by exp_diff, then add small
+    int32_t big_shifted = (int32_t)big_frac << exp_diff;
+    int32_t result = big_shifted + (int32_t)small_frac;
+
+    // Check for zero result
+    if (result == 0) {
+        *c_frac = 0;
+        *c_exp = AMBIGUOUS_EXPONENT;
+        return;
+    }
+
+    // Normalize: find leading ones or zeros
+    int leading;
+    if (result < 0) {
+        leading = __clz(~(uint32_t)result);
+    } else {
+        leading = __clz((uint32_t)result);
+    }
+
+    // Compute normalized fraction and exponent
+    // offset = small_exp + (16 - leading)
+    int16_t offset = small_exp + (16 - leading);
+
+    // Special case: check for underflow
+    if (big_exp < 0 && offset >= 0) {
+        *c_frac = (int16_t)((result << (leading - 2)) >> 16);
+        *c_exp = AMBIGUOUS_EXPONENT;
+        return;
+    }
+
+    // Normal case: fraction = (result << (leading - 1)) >> 16
+    *c_frac = (int16_t)((result << (leading - 1)) >> 16);
+    *c_exp = offset + 1;
 }
 
 /**

@@ -33,14 +33,6 @@ impl Scalar {
         self.0
     }
 
-    /// Convert to f64 (IEEE-754)
-    ///
-    /// Used when bridging to neural networks operating in f32/f64
-    #[inline]
-    pub fn to_f64(&self) -> f64 {
-        self.0.to_f64()
-    }
-
     /// Check if value is normal (finite, non-zero)
     #[inline]
     pub fn is_normal(&self) -> bool {

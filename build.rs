@@ -14,11 +14,26 @@ fn main() {
 
         println!("cargo:rustc-link-search=native={}", hip_lib_dir.display());
 
-        // Try to link against HIP library (optional - won't fail if not built)
-        println!("cargo:rustc-link-lib=dylib=spirix_hip");
+        // Try to link against HIP libraries (only if they exist)
+        let libs = [
+            "spirix_hip",
+            "circle_f4e5",
+            "ieee_complex",
+            "isolated_ops",
+            "in_place_ops",
+            "ieee_denormal_preserve",
+        ];
+
+        for lib in &libs {
+            let lib_path = hip_lib_dir.join(format!("lib{}.so", lib));
+            if lib_path.exists() {
+                println!("cargo:rustc-link-lib=dylib={}", lib);
+            }
+        }
 
         // Tell cargo to rerun if the HIP library changes
         println!("cargo:rerun-if-changed=gpu/hip/libspirix_hip.so");
         println!("cargo:rerun-if-changed=gpu/hip/spirix_matmul.hip");
+        println!("cargo:rerun-if-changed=gpu/hip/libin_place_ops.so");
     }
 }

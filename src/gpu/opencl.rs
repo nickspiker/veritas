@@ -23,8 +23,8 @@ use std::fs;
 /// use veritas::gpu::matmul_gpu_opencl;
 /// use spirix::{ScalarF4E4, Tensor};
 ///
-/// let a = Tensor::new(vec![ScalarF4E4::from(1.0); 100], vec![10, 10]);
-/// let b = Tensor::new(vec![ScalarF4E4::from(2.0); 100], vec![10, 10]);
+/// let a = Tensor::new(vec![ScalarF4E4::ONE; 100], vec![10, 10]);
+/// let b = Tensor::new(vec![ScalarF4E4::from(2u8); 100], vec![10, 10]);
 /// let c = matmul_gpu_opencl(&a, &b).unwrap();
 /// ```
 pub fn matmul_gpu_opencl(
@@ -152,20 +152,20 @@ mod tests {
         // 2×2 matrix multiply
         let a = Tensor::new(
             vec![
-                ScalarF4E4::from(1.0),
-                ScalarF4E4::from(2.0),
-                ScalarF4E4::from(3.0),
-                ScalarF4E4::from(4.0),
+                ScalarF4E4::ONE,
+                ScalarF4E4::from(2u8),
+                ScalarF4E4::from(3u8),
+                ScalarF4E4::from(4u8),
             ],
             vec![2, 2],
         );
 
         let b = Tensor::new(
             vec![
-                ScalarF4E4::from(5.0),
-                ScalarF4E4::from(6.0),
-                ScalarF4E4::from(7.0),
-                ScalarF4E4::from(8.0),
+                ScalarF4E4::from(5u8),
+                ScalarF4E4::from(6u8),
+                ScalarF4E4::from(7u8),
+                ScalarF4E4::from(8u8),
             ],
             vec![2, 2],
         );

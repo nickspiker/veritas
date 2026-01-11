@@ -25,12 +25,12 @@ fn main() {
     // Layer 1: 3×2 weights
     let mut w1 = Tensor::new(
         vec![
-            ScalarF4E4::from(0.5),
-            ScalarF4E4::from(-0.3),
-            ScalarF4E4::from(0.2),
-            ScalarF4E4::from(0.4),
-            ScalarF4E4::from(-0.1),
-            ScalarF4E4::from(0.6),
+            ScalarF4E4::ONE >> 1,  // 0.5
+            ScalarF4E4::ZERO - (ScalarF4E4::from(3u8) / ScalarF4E4::from(10u8)),  // -0.3
+            ScalarF4E4::ONE / ScalarF4E4::from(5u8),  // 0.2
+            ScalarF4E4::from(2u8) / ScalarF4E4::from(5u8),  // 0.4
+            ScalarF4E4::ZERO - (ScalarF4E4::ONE / ScalarF4E4::from(10u8)),  // -0.1
+            ScalarF4E4::from(3u8) / ScalarF4E4::from(5u8),  // 0.6
         ],
         vec![3, 2],
     );
@@ -40,9 +40,9 @@ fn main() {
     // Layer 2: 1×3 weights
     let mut w2 = Tensor::new(
         vec![
-            ScalarF4E4::from(0.7),
-            ScalarF4E4::from(-0.2),
-            ScalarF4E4::from(0.3),
+            ScalarF4E4::from(7u8) / ScalarF4E4::from(10u8),  // 0.7
+            ScalarF4E4::ZERO - (ScalarF4E4::ONE / ScalarF4E4::from(5u8)),  // -0.2
+            ScalarF4E4::from(3u8) / ScalarF4E4::from(10u8),  // 0.3
         ],
         vec![1, 3],
     );
@@ -50,22 +50,22 @@ fn main() {
     let mut layer2 = Linear::new(w2.clone(), b2.clone());
 
     // Optimizer
-    let optimizer = SGD::new(ScalarF4E4::from(0.1));
+    let optimizer = SGD::new(ScalarF4E4::ONE / ScalarF4E4::from(10u8));  // 0.1
     println!("Optimizer: SGD (learning_rate = 0.1)\n");
 
     // Training data: simple XOR-like problem
     let inputs = vec![
-        Tensor::new(vec![ScalarF4E4::from(0.0), ScalarF4E4::from(0.0)], vec![2, 1]),
-        Tensor::new(vec![ScalarF4E4::from(0.0), ScalarF4E4::from(1.0)], vec![2, 1]),
-        Tensor::new(vec![ScalarF4E4::from(1.0), ScalarF4E4::from(0.0)], vec![2, 1]),
-        Tensor::new(vec![ScalarF4E4::from(1.0), ScalarF4E4::from(1.0)], vec![2, 1]),
+        Tensor::new(vec![ScalarF4E4::ZERO, ScalarF4E4::ZERO], vec![2, 1]),
+        Tensor::new(vec![ScalarF4E4::ZERO, ScalarF4E4::ONE], vec![2, 1]),
+        Tensor::new(vec![ScalarF4E4::ONE, ScalarF4E4::ZERO], vec![2, 1]),
+        Tensor::new(vec![ScalarF4E4::ONE, ScalarF4E4::ONE], vec![2, 1]),
     ];
 
     let targets = vec![
-        Tensor::new(vec![ScalarF4E4::from(0.0)], vec![1, 1]),
-        Tensor::new(vec![ScalarF4E4::from(1.0)], vec![1, 1]),
-        Tensor::new(vec![ScalarF4E4::from(1.0)], vec![1, 1]),
-        Tensor::new(vec![ScalarF4E4::from(0.0)], vec![1, 1]),
+        Tensor::new(vec![ScalarF4E4::ZERO], vec![1, 1]),
+        Tensor::new(vec![ScalarF4E4::ONE], vec![1, 1]),
+        Tensor::new(vec![ScalarF4E4::ONE], vec![1, 1]),
+        Tensor::new(vec![ScalarF4E4::ZERO], vec![1, 1]),
     ];
 
     println!("Training data (XOR-like):");

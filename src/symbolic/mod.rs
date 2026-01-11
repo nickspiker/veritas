@@ -18,11 +18,15 @@ pub mod context;
 pub mod eval;
 pub mod expr;
 pub mod simplify;
+pub mod arithmetic;
+pub mod bitwise;
 
 pub use context::Context;
 pub use eval::Evaluate;
 pub use expr::Expr;
 pub use simplify::Simplify;
+pub use arithmetic::{ArithOp, ArithProblem, ArithResult, ArithGenerator};
+pub use bitwise::{BitwiseOp, BitwiseProblem, BitwiseResult, BitwiseGenerator};
 
 use crate::error::{Result, VeritasError};
 use crate::numeric::{Circle, Scalar};

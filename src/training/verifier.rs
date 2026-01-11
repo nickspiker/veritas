@@ -2,6 +2,7 @@
 
 use crate::numeric::Scalar;
 use crate::error::{Result, VeritasError};
+use spirix::ScalarF4E4;
 
 /// Result of verifying a neural explanation
 #[derive(Debug, Clone)]
@@ -106,11 +107,13 @@ impl VerificationStats {
         self.contradicted += 1;
     }
 
-    pub fn accuracy(&self) -> f64 {
+    pub fn accuracy(&self) -> ScalarF4E4 {
         if self.total_verified == 0 {
-            0.0
+            ScalarF4E4::ZERO
         } else {
-            self.correct as f64 / self.total_verified as f64
+            let correct_spirix = ScalarF4E4::from(self.correct as u32);
+            let total_spirix = ScalarF4E4::from(self.total_verified as u32);
+            correct_spirix / total_spirix
         }
     }
 }

@@ -73,6 +73,10 @@ pub enum VeritasError {
 
     #[error("Training data corrupted: {0}")]
     CorruptedTrainingData(String),
+
+    // Autograd/Tensor errors
+    #[error("Invalid input: {0}")]
+    InvalidInput(String),
 }
 
 impl VeritasError {

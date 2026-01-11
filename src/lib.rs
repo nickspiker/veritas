@@ -39,6 +39,10 @@ pub mod symbolic;
 pub mod training;
 pub mod verification;
 pub mod gpu;
+pub mod autograd;
+pub mod iteration;
+pub mod encoding;
+pub mod transformer;
 
 pub mod error;
 pub use error::{Result, VeritasError};
@@ -48,3 +52,4 @@ pub use compositor::{ComposedResponse, ThoughtStructure};
 pub use numeric::{Circle, Complex, Scalar};
 pub use symbolic::{Expr, Simplify};
 pub use verification::{Claim, Proof, VerificationState};
+pub use transformer::{ByteTransformer, TransformerConfig};

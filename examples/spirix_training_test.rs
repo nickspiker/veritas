@@ -6,7 +6,6 @@
 //! - No trash in the brain
 
 use spirix::{ScalarF4E4, ScalarF6E5, Tensor, Linear, SimpleNet, SGD, matmul};
-use veritas::training::{f4e4_to_f6e5, f6e5_to_f4e4};
 
 fn main() {
     println!("=== Veritas: Pure Spirix Neural Training ===\n");
@@ -44,7 +43,7 @@ fn main() {
     println!("  All activations: ReLU (NO NaN)\n");
 
     // Create optimizer
-    let optimizer = SGD::new(ScalarF4E4::from(0.01));
+    let optimizer = SGD::new(ScalarF4E4::ONE / ScalarF4E4::from(100u8));  // 0.01
     println!("Optimizer: SGD");
     println!("  Learning rate: 0.01 (ScalarF4E4)\n");
 
@@ -52,9 +51,9 @@ fn main() {
     println!("Testing forward pass...");
     let input = Tensor::new(
         vec![
-            ScalarF4E4::from(1.0),
-            ScalarF4E4::from(2.0),
-            ScalarF4E4::from(3.0),
+            ScalarF4E4::ONE,
+            ScalarF4E4::from(2u8),
+            ScalarF4E4::from(3u8),
         ],
         vec![3, 1],
     );
@@ -63,17 +62,17 @@ fn main() {
     println!("✓ Forward pass successful");
     println!("  Input shape: {:?}", input.shape);
     println!("  Output shape: {:?}", output.shape);
-    println!("  Output values: [{:.3}, {:.3}]",
-             output.data[0].to_f64(),
-             output.data[1].to_f64());
+    println!("  Output values: [{}, {}]",
+             output.data[0],
+             output.data[1]);
 
     println!("\n--- Verification with Symbolic Engine ---");
     println!("Converting neural output F4E4 → F6E5 for verification...");
 
-    // Convert to high-precision for verification
-    let output_f6e5 = f4e4_to_f6e5(output.data[0]);
-    println!("  Neural output (F4E4): {:.6}", output.data[0].to_f64());
-    println!("  Verified (F6E5):      {:.6}", output_f6e5.to_f64());
+    // Convert to high-precision for verification (native Spirix conversion)
+    let output_f6e5 = ScalarF6E5::from(&output.data[0]);
+    println!("  Neural output (F4E4): {}", output.data[0]);
+    println!("  Verified (F6E5):      {}", output_f6e5);
 
     println!("\n--- Key Properties ---");
     println!("✓ ZERO IEEE-754 in brain");
