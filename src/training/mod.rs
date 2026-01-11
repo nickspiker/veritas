@@ -19,6 +19,7 @@ pub mod checkpoint;
 pub mod diagnostics;
 pub mod expression_parser;
 pub mod code_module;
+pub mod simple_math_parser;
 
 pub use generator::{TrainingGenerator, GeneratorStats};
 pub use explainer::NeuralExplainer;
@@ -31,3 +32,4 @@ pub use checkpoint::Checkpoint;
 pub use diagnostics::Diagnostics;
 pub use expression_parser::{ParsedExpression, Operation, parse_math_expression, call_basecalc};
 pub use code_module::{verify_rust_code, generate_code_examples, generate_test_code_examples, generate_non_code_examples};
+pub use simple_math_parser::{SimpleMathOp, ParsedMath, parse_natural_language_math, contains_math_keywords};
