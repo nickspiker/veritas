@@ -29,22 +29,23 @@ pub struct ParsedMath {
 /// - Digit numbers: "7", "3"
 /// - Operation words: "plus", "add", "minus", "times"
 /// - Mixed format: "What's seven plus 3?"
+/// - Fractions: "a third of nine"
 pub fn parse_natural_language_math(text: &str) -> Option<ParsedMath> {
     let lower = text.to_lowercase();
 
-    // Extract first number
-    let a = extract_first_number(&lower)?;
-
-    // Extract operation
+    // Extract operation first to find boundaries
     let op = extract_operation(&lower)?;
 
-    // Extract second number (after operation)
-    let b = extract_second_number(&lower, op)?;
+    // Extract first number (before operation)
+    let (a, first_num_end) = extract_first_number_with_pos(&lower)?;
+
+    // Extract second number (after first number position)
+    let b = extract_second_number_after_pos(&lower[first_num_end..], op)?;
 
     Some(ParsedMath { a, b, op })
 }
 
-fn extract_first_number(text: &str) -> Option<u8> {
+fn extract_first_number_with_pos(text: &str) -> Option<(u8, usize)> {
     // Word numbers (dozenal 0-11)
     let number_words = [
         ("zero", 0),
@@ -61,24 +62,104 @@ fn extract_first_number(text: &str) -> Option<u8> {
         ("eleven", 11),
     ];
 
-    // Check word numbers first (more specific)
+    // Find EARLIEST occurrence (left-to-right parsing)
+    let mut earliest_pos = usize::MAX;
+    let mut earliest_num = None;
+    let mut earliest_end = 0;
+
     for (word, value) in &number_words {
-        if text.contains(word) {
-            return Some(*value);
+        if let Some(pos) = text.find(word) {
+            if pos < earliest_pos {
+                earliest_pos = pos;
+                earliest_num = Some(*value);
+                earliest_end = pos + word.len();
+            }
         }
     }
 
-    // Check digit form (0-11)
-    // Look for first digit in text
-    for ch in text.chars() {
+    if earliest_num.is_some() {
+        return Some((earliest_num.unwrap(), earliest_end));
+    }
+
+    // Check digit form (0-11) - find first digit
+    for (pos, ch) in text.char_indices() {
         if ch.is_ascii_digit() {
             let digit = ch.to_digit(10)? as u8;
             // Check if it's 10 or 11 (two digits)
-            let rest = text.split_once(ch)?.1;
-            if digit == 1 {
-                if rest.starts_with('0') {
+            if digit == 1 && pos + 1 < text.len() {
+                let next_char = text.chars().nth(pos + 1)?;
+                if next_char == '0' {
+                    return Some((10, pos + 2));
+                } else if next_char == '1' {
+                    return Some((11, pos + 2));
+                }
+            }
+            return Some((digit, pos + 1));
+        }
+    }
+
+    None
+}
+
+fn extract_second_number_after_pos(text: &str, op: SimpleMathOp) -> Option<u8> {
+    // Handle fractions with implicit divisors
+    if op == SimpleMathOp::Div {
+        if text.contains("third") {
+            return Some(3);
+        }
+        if text.contains("half") || text.contains("halves") {
+            return Some(2);
+        }
+        if text.contains("quarter") {
+            return Some(4);
+        }
+        if text.contains("fifth") {
+            return Some(5);
+        }
+    }
+
+    // Word numbers - find earliest in remaining text
+    let number_words = [
+        ("zero", 0),
+        ("one", 1),
+        ("two", 2),
+        ("three", 3),
+        ("four", 4),
+        ("five", 5),
+        ("six", 6),
+        ("seven", 7),
+        ("eight", 8),
+        ("nine", 9),
+        ("ten", 10),
+        ("eleven", 11),
+    ];
+
+    let mut earliest_pos = usize::MAX;
+    let mut earliest_num = None;
+
+    for (word, value) in &number_words {
+        if let Some(pos) = text.find(word) {
+            if pos < earliest_pos {
+                earliest_pos = pos;
+                earliest_num = Some(*value);
+            }
+        }
+    }
+
+    if earliest_num.is_some() {
+        return earliest_num;
+    }
+
+    // Digit form - find first digit
+    for (pos, ch) in text.char_indices() {
+        if ch.is_ascii_digit() {
+            let digit = ch.to_digit(10)? as u8;
+            // Check for 10 or 11
+            if digit == 1 && pos + 1 < text.len() {
+                let next_char = text.chars().nth(pos + 1)?;
+                if next_char == '0' {
                     return Some(10);
-                } else if rest.starts_with('1') {
+                } else if next_char == '1' {
                     return Some(11);
                 }
             }
@@ -90,6 +171,22 @@ fn extract_first_number(text: &str) -> Option<u8> {
 }
 
 fn extract_second_number(text: &str, op: SimpleMathOp) -> Option<u8> {
+    // Handle fractions with implicit divisors
+    if op == SimpleMathOp::Div {
+        if text.contains("third") {
+            return Some(3);
+        }
+        if text.contains("half") || text.contains("halves") {
+            return Some(2);
+        }
+        if text.contains("quarter") {
+            return Some(4);
+        }
+        if text.contains("fifth") {
+            return Some(5);
+        }
+    }
+
     // Find position after operation word
     let op_word = match op {
         SimpleMathOp::Add => {
@@ -125,7 +222,7 @@ fn extract_second_number(text: &str, op: SimpleMathOp) -> Option<u8> {
     let op_pos = text.find(op_word)? + op_word.len();
     let after_op = &text[op_pos..];
 
-    // Word numbers
+    // Word numbers - find earliest in text after operation
     let number_words = [
         ("zero", 0),
         ("one", 1),
@@ -141,22 +238,32 @@ fn extract_second_number(text: &str, op: SimpleMathOp) -> Option<u8> {
         ("eleven", 11),
     ];
 
+    let mut earliest_pos = usize::MAX;
+    let mut earliest_num = None;
+
     for (word, value) in &number_words {
-        if after_op.contains(word) {
-            return Some(*value);
+        if let Some(pos) = after_op.find(word) {
+            if pos < earliest_pos {
+                earliest_pos = pos;
+                earliest_num = Some(*value);
+            }
         }
     }
 
-    // Digit form
-    for ch in after_op.chars() {
+    if earliest_num.is_some() {
+        return earliest_num;
+    }
+
+    // Digit form - find first digit after operation
+    for (pos, ch) in after_op.char_indices() {
         if ch.is_ascii_digit() {
             let digit = ch.to_digit(10)? as u8;
             // Check for 10 or 11
-            let rest = after_op.split_once(ch)?.1;
-            if digit == 1 {
-                if rest.starts_with('0') {
+            if digit == 1 && pos + 1 < after_op.len() {
+                let next_char = after_op.chars().nth(pos + 1)?;
+                if next_char == '0' {
                     return Some(10);
-                } else if rest.starts_with('1') {
+                } else if next_char == '1' {
                     return Some(11);
                 }
             }
@@ -168,6 +275,20 @@ fn extract_second_number(text: &str, op: SimpleMathOp) -> Option<u8> {
 }
 
 fn extract_operation(text: &str) -> Option<SimpleMathOp> {
+    // Check for fractions first (more specific)
+    if text.contains("third") || text.contains("thirds") {
+        return Some(SimpleMathOp::Div);
+    }
+    if text.contains("half") || text.contains("halves") {
+        return Some(SimpleMathOp::Div);
+    }
+    if text.contains("quarter") || text.contains("quarters") {
+        return Some(SimpleMathOp::Div);
+    }
+    if text.contains("fifth") || text.contains("fifths") {
+        return Some(SimpleMathOp::Div);
+    }
+
     // Check in order of specificity
     if text.contains("plus") || text.contains("add") {
         return Some(SimpleMathOp::Add);
@@ -211,7 +332,7 @@ pub fn contains_math_keywords(text: &str) -> bool {
     .iter()
     .any(|&word| lower.contains(word));
 
-    // Check for operation words
+    // Check for operation words (including fractions)
     let has_operation = [
         "plus",
         "minus",
@@ -221,6 +342,10 @@ pub fn contains_math_keywords(text: &str) -> bool {
         "subtract",
         "multiply",
         "divide",
+        "third",
+        "half",
+        "quarter",
+        "fifth",
     ]
     .iter()
     .any(|&word| lower.contains(word));

@@ -136,12 +136,14 @@ fn print_help() {
     println!("  Digit numbers: '7 + 3'");
     println!("  Mixed:         'seven + 3'");
     println!("  Natural:       'What's 5 times 2?'");
+    println!("  Fractions:     'a third of nine'");
     println!();
     println!("Operations:");
     println!("  Addition:       plus, add, +");
     println!("  Subtraction:    minus, subtract, -");
     println!("  Multiplication: times, multiply, *, ×");
     println!("  Division:       divided, divide, /, ÷");
+    println!("  Fractions:      third, half, quarter, fifth");
     println!();
     println!("Numbers (dozenal 0-11):");
     println!("  0-9: same as decimal");
@@ -153,6 +155,8 @@ fn print_help() {
     println!("  'What is 5 times 2?' → A");
     println!("  '11 - 4' → 7");
     println!("  'nine divided by three' → 3");
+    println!("  'a third of nine' → 3");
+    println!("  'half of ten' → 5");
     println!("  'ten times eleven' → 92 (110 in decimal!)");
     println!();
     println!("Architecture:");
