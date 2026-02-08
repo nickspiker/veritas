@@ -70,3 +70,7 @@ path = "examples/gpu_in_place_ops_bench.rs"
 # [[bench]]
 # name = "sqrt_correctness_check"
 # harness = false
+
+[[bench]]
+name = "operator_comprehensive"
+harness = false
