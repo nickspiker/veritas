@@ -188,7 +188,7 @@ May flush denormals to zero (platform-dependent)
 Original: 0/0  → ℘ ⬇/⬇ (0b1110100100000000)
 After +1:      → ℘ ⬇/⬇ (0b1110100100000000)
 After ×5:      → ℘ ⬇/⬇ (0b1110100100000000)
-✓ First cause preserved through operations
+✓ First cause preserved thru operations
 ```
 
 **IEEE**:

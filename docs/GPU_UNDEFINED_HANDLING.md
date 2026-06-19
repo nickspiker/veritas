@@ -119,7 +119,7 @@ Our edge case tests ([examples/test_edge_cases.rs](../examples/test_edge_cases.r
 
 ✅ **CPU operations preserve undefined correctly:**
 - 0/0 produces undefined (℘ ⬇/⬇)
-- Undefined propagates through `add()`, `multiply()`, `transpose()`, `scale()`
+- Undefined propagates thru `add()`, `multiply()`, `transpose()`, `scale()`
 - All 30+ undefined variants can be stored in tensors
 
 ⚠️ **GPU operations untested for undefined:**
@@ -140,7 +140,7 @@ Our edge case tests ([examples/test_edge_cases.rs](../examples/test_edge_cases.r
 
 ### Long-term (Nice to have):
 1. **Spirix GPU library** - Move Spirix arithmetic entirely to GPU-native implementation
-2. **Kernel-level undefined tracking** - Track first cause of undefined through computation graph
+2. **Kernel-level undefined tracking** - Track first cause of undefined thru computation graph
 3. **Undefined visualization** - Debug tools to show which operation caused undefined
 
 ## Example: Testing GPU Undefined

@@ -210,7 +210,7 @@ fn main() {
     }
 
     println!("\n=== Complete ===");
-    println!("✓ Pure Spirix maintained throughout");
+    println!("✓ Pure Spirix maintained thruout");
     println!("✓ Zero IEEE-754 contamination");
     println!("✓ No Python runtime dependency");
 }

@@ -63,7 +63,7 @@ fn main() {
         encoder_weight.zero_grad();
 
         for (i, &x) in training_data.iter().enumerate() {
-            // Step 1: Encode x → c (through learned encoder)
+            // Step 1: Encode x → c (thru learned encoder)
             let x_tensor = Tensor::from_scalars(vec![x], Shape::matrix(1, 1)).unwrap();
             let c_tensor = matmul(&encoder_weight, &x_tensor).unwrap();
             let c = c_tensor.as_scalars().unwrap()[0];
@@ -99,7 +99,7 @@ fn main() {
             // Step 6: Backprop if error is significant
             if error_magnitude > (ScalarF4E4::ONE / ScalarF4E4::from(100u8)) {
                 // Gradient of error w.r.t. neural output
-                // We need to backprop through the iteration, but for now
+                // We need to backprop thru the iteration, but for now
                 // we'll use a simplified gradient: directly update encoder
 
                 // For identity gate: we want encoder(x) = x, so c = x

@@ -364,7 +364,7 @@ llvm-objdump -d spirix_kernel.co
 1. Start with HIP (familiar, fast to develop)
 2. Profile and optimize (rocprof)
 3. Drop to assembly for critical kernels
-4. Verify zero IEEE-754 throughout
+4. Verify zero IEEE-754 thruout
 
 **Next step:** Implement basic HIP kernel for Spirix matmul and measure actual performance.
 

@@ -1,7 +1,7 @@
 //! Byte-level Transformer Architecture
 //!
 //! No tokenization - direct UTF-8 byte processing.
-//! Pure Spirix arithmetic throughout.
+//! Pure Spirix arithmetic thruout.
 //!
 //! Architecture:
 //! - Input: Vec<u8> (256 possible byte values)

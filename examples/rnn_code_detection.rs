@@ -261,7 +261,7 @@ fn main() {
                 w_ho.accumulate_grad(grad_w_ho).unwrap();
             }
 
-            // BPTT through time
+            // BPTT thru time
             let mut grad_hidden_data = grad_final_hidden.as_scalars().unwrap().to_vec();
 
             for t in (0..hidden_states.len()).rev() {

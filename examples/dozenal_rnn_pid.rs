@@ -4,7 +4,7 @@
 //! ✓ No IEEE-754
 //! ✓ Pure Spirix arithmetic
 //! ✓ Spirix base-12 formatting
-//! ✓ Full BPTT (backprop through time)
+//! ✓ Full BPTT (backprop thru time)
 //! ✓ No gradient clipping needed - Spirix handles vanished/exploded states
 //! ✓ PID controller for automatic LR tuning
 //!
@@ -174,7 +174,7 @@ fn main() {
                 digit_count += 1;
             }
 
-            // Forward pass through sequence
+            // Forward pass thru sequence
             let mut hidden_states = Vec::new();
             let mut hidden_data = vec![ScalarF4E4::ZERO; HIDDEN_SIZE];
 
@@ -233,7 +233,7 @@ fn main() {
             grad_logits[ex.target as usize] = grad_logits[ex.target as usize] - ScalarF4E4::ONE;
             let grad_logits_tensor = Tensor::from_scalars(grad_logits, Shape::matrix(1, OUTPUT_SIZE)).unwrap();
 
-            // Backprop through output layer
+            // Backprop thru output layer
             let (grad_final_hidden, grad_w_ho) = matmul_backward(&grad_logits_tensor, &final_hidden, &w_ho).unwrap();
 
             // Accumulate output weight gradients
@@ -243,7 +243,7 @@ fn main() {
                 w_ho.accumulate_grad(grad_w_ho).unwrap();
             }
 
-            // BPTT through time - backprop through RNN states
+            // BPTT thru time - backprop thru RNN states
             let mut grad_h_next = grad_final_hidden.as_scalars().unwrap().to_vec();
 
             // Process sequence in reverse
@@ -251,7 +251,7 @@ fn main() {
                 let byte = ex.input[t];
                 let h_t = &hidden_states[t];
 
-                // Gradient through tanh: dL/dx = dL/dtanh * tanh'(x) where tanh'(x) = 1 - tanh^2
+                // Gradient thru tanh: dL/dx = dL/dtanh * tanh'(x) where tanh'(x) = 1 - tanh^2
                 let grad_h_pre: Vec<ScalarF4E4> = h_t.iter()
                     .zip(grad_h_next.iter())
                     .map(|(h, g)| {

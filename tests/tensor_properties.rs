@@ -244,7 +244,7 @@ proptest! {
         let result_data = result.as_scalars().unwrap();
 
         prop_assert!(result_data[2].is_undefined(),
-            "Undefined should propagate through addition at index 2");
+            "Undefined should propagate thru addition at index 2");
 
         // Other elements should be normal
         for i in [0, 1, 3, 4] {
@@ -266,7 +266,7 @@ proptest! {
         let result_data = result.as_scalars().unwrap();
 
         prop_assert!(result_data[1].is_undefined(),
-            "Undefined should propagate through scale at index 1");
+            "Undefined should propagate thru scale at index 1");
     }
 
     #[test]

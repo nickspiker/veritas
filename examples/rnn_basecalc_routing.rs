@@ -348,13 +348,13 @@ fn main() {
                 w_ho.accumulate_grad(grad_w_ho).unwrap();
             }
 
-            // BPTT through time
+            // BPTT thru time
             let mut grad_hidden_data = grad_final_hidden.as_scalars().unwrap().to_vec();
 
             for t in (0..hidden_states.len()).rev() {
                 let hidden_t = &hidden_states[t];
 
-                // Gradient through tanh
+                // Gradient thru tanh
                 let grad_pre_tanh: Vec<ScalarF4E4> = hidden_t.iter()
                     .zip(grad_hidden_data.iter())
                     .map(|(h, g)| {

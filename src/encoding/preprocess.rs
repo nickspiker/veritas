@@ -133,7 +133,7 @@ pub fn preprocess(text: &str) -> Result<PreprocessResult> {
             continue;
         }
 
-        // Regular character - pass through
+        // Regular character - pass thru
         result.push(ch);
     }
 

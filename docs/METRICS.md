@@ -369,7 +369,7 @@ Testing Spirix GPU acceleration vs CPU.
 |-------------|--------|----------|
 | No IEEE-754 in training | ✓ | All ScalarF4E4 operations |
 | No gradient clipping | ✓ | 75% accuracy without clipping |
-| No modulo operations | ✓ | Counter-based control throughout |
+| No modulo operations | ✓ | Counter-based control thruout |
 | GPU bit-identical | ✓ | 1M elements, 0 mismatches |
 | Pure counting diagnostics | ✓ | No division in health checks |
 | Verified arithmetic | ✓ | 100% basecalc correctness |

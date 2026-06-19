@@ -84,7 +84,7 @@ impl MLP {
         MLP { layers }
     }
 
-    /// Forward pass through all layers
+    /// Forward pass thru all layers
     pub fn forward(&self, mut x: Tensor) -> Result<Tensor> {
         for (i, layer) in self.layers.iter().enumerate() {
             x = layer.forward(&x)?;

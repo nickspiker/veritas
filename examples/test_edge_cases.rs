@@ -106,21 +106,21 @@ fn test_undefined_propagation() {
     println!("    is_zero(): {}", undef.is_zero());
     println!("    is_finite(): {}", undef.is_finite());
 
-    // Undefined propagates through operations
+    // Undefined propagates thru operations
     let one = ScalarF4E4::ONE;
 
     let undef_plus = undef + one;
     println!("  undefined + 1 = {:?}", undef_plus);
     println!("    is_undefined(): {}", undef_plus.is_undefined());
-    assert!(undef_plus.is_undefined(), "Undefined should propagate through addition");
+    assert!(undef_plus.is_undefined(), "Undefined should propagate thru addition");
 
     let undef_mult = undef * one;
     println!("  undefined * 1 = {:?}", undef_mult);
-    assert!(undef_mult.is_undefined(), "Undefined should propagate through multiplication");
+    assert!(undef_mult.is_undefined(), "Undefined should propagate thru multiplication");
 
     let undef_div = one / undef;
     println!("  1 / undefined = {:?}", undef_div);
-    assert!(undef_div.is_undefined(), "Undefined should propagate through division");
+    assert!(undef_div.is_undefined(), "Undefined should propagate thru division");
 
     println!("  ✓ Undefined propagates correctly");
 
@@ -203,7 +203,7 @@ fn test_tensor_edge_cases() {
     println!("    ∞*2 = {:?}, is_infinite: {}", scaled_data[2], scaled_data[2].is_infinite());
     println!("    undefined*2 = {:?}, is_undefined: {}", scaled_data[3], scaled_data[3].is_undefined());
 
-    println!("  ✓ Edge cases preserved through tensor operations");
+    println!("  ✓ Edge cases preserved thru tensor operations");
 }
 
 fn test_division_by_zero() {

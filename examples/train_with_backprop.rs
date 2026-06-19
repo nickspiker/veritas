@@ -1,7 +1,7 @@
 //! End-to-end training with manual backpropagation
 //!
 //! Demonstrates:
-//! - Forward pass through network
+//! - Forward pass thru network
 //! - Loss computation
 //! - Manual backward pass (computing gradients)
 //! - Weight updates with optimizer
@@ -78,7 +78,7 @@ fn main() {
             let diff = y_pred_val - *y;
             let grad_output = Tensor::from_scalars(vec![diff << 1], Shape::matrix(1, 1)).unwrap();
 
-            // Backprop through matmul to get gradient w.r.t. weight
+            // Backprop thru matmul to get gradient w.r.t. weight
             let (grad_weight, _grad_x) = matmul_backward(&grad_output, &weight, &x_tensor).unwrap();
 
             // Accumulate gradient

@@ -342,7 +342,7 @@ fn test_matmul_infinity_zero() {
 
 #[test]
 fn test_all_state_preservation() {
-    println!("Testing all states preserved through operations...");
+    println!("Testing all states preserved thru operations...");
 
     let zero = ScalarF4E4::ZERO;
     let one = ScalarF4E4::ONE;
@@ -368,7 +368,7 @@ fn test_all_state_preservation() {
         assert_no_state_corruption(&trans, &format!("Transpose state {}", i));
     }
 
-    println!("  ✓ All states preserved through all operations");
+    println!("  ✓ All states preserved thru all operations");
 }
 
 #[test]

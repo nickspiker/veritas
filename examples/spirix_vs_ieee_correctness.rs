@@ -224,7 +224,7 @@ fn test_undefined_propagation() {
     println!("    Pattern: {:#018b}", undef_after_mul.fraction as u16);
 
     if undef_origin.fraction == undef_after_mul.fraction {
-        println!("    ✓ First cause preserved through operations!");
+        println!("    ✓ First cause preserved thru operations!");
     }
 
     // IEEE: NaN payload may change

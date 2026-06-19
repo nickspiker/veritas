@@ -101,11 +101,11 @@ fn main() {
             ];
             let grad_output = Tensor::from_scalars(grad_output_data, Shape::matrix(3, 1)).unwrap();
 
-            // Backprop through W2
+            // Backprop thru W2
             let (grad_w2, grad_hidden) = matmul_backward(&grad_output, &w2, &hidden).unwrap();
             w2.accumulate_grad(grad_w2).unwrap();
 
-            // Backprop through ReLU (gradient = 1 if input > 0, else 0)
+            // Backprop thru ReLU (gradient = 1 if input > 0, else 0)
             let hidden_pre_data = hidden_pre.as_scalars().unwrap();
             let grad_hidden_data = grad_hidden.as_scalars().unwrap();
             let grad_hidden_pre_data: Vec<ScalarF4E4> = hidden_pre_data
@@ -115,7 +115,7 @@ fn main() {
                 .collect();
             let grad_hidden_pre = Tensor::from_scalars(grad_hidden_pre_data, hidden_pre.shape().clone()).unwrap();
 
-            // Backprop through W1
+            // Backprop thru W1
             let (grad_w1, _) = matmul_backward(&grad_hidden_pre, &w1, &input).unwrap();
             w1.accumulate_grad(grad_w1).unwrap();
         }

@@ -38,7 +38,7 @@ mod gpu_undefined_tests {
         }
     }
 
-    /// Test that GPU preserves undefined through operations
+    /// Test that GPU preserves undefined thru operations
     #[test]
     #[ignore]
     fn test_gpu_undefined_propagation() {

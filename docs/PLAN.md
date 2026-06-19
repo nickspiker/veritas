@@ -14,7 +14,7 @@
    - 12-layer transformer: attention + FFN
    - 512-dim embeddings, 2048 byte context
    - Learns: when to route, how to compose results
-   - ScalarF4E4 throughout (no IEEE)
+   - ScalarF4E4 thruout (no IEEE)
 
 2. **Symbolic Resources (Native nodes, not external calls)**
    - `basecalc`: Arbitrary precision math (CAS)
@@ -56,7 +56,7 @@ if prediction != verified {
 
 **Intent-based dispatch:** Network learns semantic mapping (what to compute), tool executes (how to compute).
 
-**Native integration:** Symbolic operations are forward pass nodes, not post-generation tool calls. Gradients flow through routing decisions.
+**Native integration:** Symbolic operations are forward pass nodes, not post-generation tool calls. Gradients flow thru routing decisions.
 
 **Verified training:** Infinite self-generated data with ground truth from symbolic engines.
 

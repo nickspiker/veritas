@@ -178,10 +178,10 @@ fn main() {
             grad_logits[ex.target as usize] = grad_logits[ex.target as usize] - ScalarF4E4::ONE;
             let grad_logits_tensor = Tensor::from_scalars(grad_logits, Shape::matrix(1, OUTPUT_SIZE)).unwrap();
 
-            // Backprop through w2: output layer
+            // Backprop thru w2: output layer
             let (grad_hidden, grad_w2) = matmul_backward(&grad_logits_tensor, &hidden, &w2).unwrap();
 
-            // Backprop through tanh: dL/dx = dL/dtanh(x) * tanh'(x) where tanh'(x) = 1 - tanh(x)^2
+            // Backprop thru tanh: dL/dx = dL/dtanh(x) * tanh'(x) where tanh'(x) = 1 - tanh(x)^2
             let hidden_grad_data = hidden.as_scalars().unwrap();
             let grad_hidden_data = grad_hidden.as_scalars().unwrap();
             let grad_hidden_pre: Vec<ScalarF4E4> = hidden_grad_data.iter()
@@ -193,7 +193,7 @@ fn main() {
                 .collect();
             let grad_hidden_pre_tensor = Tensor::from_scalars(grad_hidden_pre, Shape::matrix(1, HIDDEN_SIZE)).unwrap();
 
-            // Backprop through w1: input → hidden layer
+            // Backprop thru w1: input → hidden layer
             let (_grad_input, grad_w1) = matmul_backward(&grad_hidden_pre_tensor, &input, &w1).unwrap();
 
             // Accumulate gradients for both layers
@@ -230,7 +230,7 @@ fn main() {
 
     println!("\n=== Training Complete ===");
     println!("✓ Pure Spirix backpropagation");
-    println!("✓ Full gradient flow through both layers");
+    println!("✓ Full gradient flow thru both layers");
     println!("✓ No IEEE-754 contamination");
     println!("✓ No BPTT complexity needed for this task");
 }

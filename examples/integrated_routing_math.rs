@@ -351,7 +351,7 @@ fn main() {
                 .map(|(a, b)| *a + *b)
                 .collect();
 
-            // Backprop through tanh
+            // Backprop thru tanh
             let grad_hidden_pre: Vec<ScalarF4E4> = hidden_data.iter()
                 .zip(grad_hidden_combined.iter())
                 .map(|(h, g)| {
@@ -361,7 +361,7 @@ fn main() {
                 .collect();
             let grad_hidden_pre_tensor = Tensor::from_scalars(grad_hidden_pre, Shape::matrix(1, HIDDEN_SIZE)).unwrap();
 
-            // Backprop through w1
+            // Backprop thru w1
             let (_grad_input, grad_w1) = matmul_backward(&grad_hidden_pre_tensor, &input, &w1).unwrap();
 
             // Accumulate w1 gradients
@@ -402,6 +402,6 @@ fn main() {
     println!("✓ Routing head learned task classification");
     println!("✓ Math head learned addition via Spirix verification");
     println!("✓ Text head learned next-byte prediction");
-    println!("✓ Full gradient flow through all layers");
+    println!("✓ Full gradient flow thru all layers");
     println!("✓ No IEEE-754 contamination");
 }

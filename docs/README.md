@@ -52,7 +52,7 @@ Three snap-in modules demonstrate the architecture:
 - Vanished gradients maintain sign/direction (not flushed to zero like IEEE subnormals)
 - Exploded gradients stay bounded (no Inf/NaN states)
 - Enables deep BPTT without manual gradient clipping
-- Natural regularization through two's complement saturation
+- Natural regularization thru two's complement saturation
 
 **Curriculum Learning:**
 - Binary (base 2) → Octal (base 8) → Dozenal (base 12) → Decimal (base 10)
@@ -86,7 +86,7 @@ Routing Classification (is_math? is_code? is_text?)
 
 ```rust
 for example in dataset {
-    // Forward pass through RNN (pure Spirix)
+    // Forward pass thru RNN (pure Spirix)
     let routing_decision = rnn.classify(&example.input);
 
     // Route to verification module
@@ -108,7 +108,7 @@ for example in dataset {
 ### What Works ✅
 
 - **Pure Spirix training converges** (71% feedforward, 75% RNN on dozenal addition)
-- **BPTT stable through 14+ timesteps** (no gradient death, no clipping needed)
+- **BPTT stable thru 14+ timesteps** (no gradient death, no clipping needed)
 - **GPU Spirix matmul bit-identical to CPU** (38x speedup on naive kernel)
 - **Symbolic verification provides reliable training signal** (100% accuracy on routed examples)
 - **Snap-in modules integrate cleanly** (math, code, extensible to more domains)
@@ -220,7 +220,7 @@ for example in dataset {
 - **Transfer learning** - does dozenal knowledge transfer to decimal?
 - **Multi-task training** - math + code simultaneously
 - **Adaptive LR tuning** - PID with 10× lower gains
-- **Curriculum scheduling** - automatic progression through bases
+- **Curriculum scheduling** - automatic progression thru bases
 
 ### For Applications
 - **Integration with tools** - real basecalc, sandboxed rustc

@@ -14,7 +14,7 @@
 - Thoughts are iterative state transformations (like z² + c)
 - Internal state is computational (symbolic + numerical), not tokens
 - Serialize to language only at output, not during thinking
-- Convergence through iteration, not next-token prediction
+- Convergence thru iteration, not next-token prediction
 
 ### 2. Resources Are First-Class, Not Bolt-Ons
 - Math engine computes, neural network learns when to use it
@@ -28,7 +28,7 @@
 - VSF for all storage (weights, checkpoints, state)
 - No fixed size limits, no overflow surprises
 
-### 4. Self-Correction Through Verification
+### 4. Self-Correction Thru Verification
 - Contradictions between neural and symbolic → training signal
 - Every claim either verified or marked uncertain
 - Mistakes generate gradients toward truth
@@ -109,7 +109,7 @@
 - It learns from verified truth, not human preference
 - It snapshots/restores computational state seamlessly
 - It proves faster training than Python stacks
-- It demonstrates self-correction through verification
+- It demonstrates self-correction thru verification
 
 ### Veritas fails if:
 - It pattern-matches without computing

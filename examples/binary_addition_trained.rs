@@ -116,7 +116,7 @@ fn main() {
         w_out.zero_grad();
 
         for ex in &dataset {
-            // Forward pass through RNN
+            // Forward pass thru RNN
             let mut hidden_data = vec![ScalarF4E4::ZERO; HIDDEN_SIZE];
             let mut hidden_states = Vec::new();
             let mut inputs = Vec::new();
@@ -187,7 +187,7 @@ fn main() {
 
             let grad_logits_tensor = Tensor::from_scalars(grad_logits, Shape::matrix(1, 15)).unwrap();
 
-            // Backprop through output layer
+            // Backprop thru output layer
             let (_grad_hidden, grad_w_out) = matmul_backward(&grad_logits_tensor, &final_hidden, &w_out).unwrap();
 
             // Manually accumulate gradients (simplified - no full BPTT yet)
@@ -197,7 +197,7 @@ fn main() {
                 w_out.accumulate_grad(grad_w_out).unwrap();
             }
 
-            // TODO: Full BPTT through RNN (backprop through hidden states)
+            // TODO: Full BPTT thru RNN (backprop thru hidden states)
             // For now, only training output layer
         }
 

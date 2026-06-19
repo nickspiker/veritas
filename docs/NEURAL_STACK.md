@@ -70,7 +70,7 @@ Gradient descent algorithms using Spirix arithmetic.
 **No IEEE Issues:**
 - No FTZ when updating small weights
 - Denormals preserved during momentum accumulation
-- Verified arithmetic throughout
+- Verified arithmetic thruout
 
 ### 4. **Neural Network Primitives** (`src/autograd/nn.rs`)
 
@@ -125,7 +125,7 @@ Building blocks for neural architectures.
 
 ### ⚠️ **TODO**
 
-1. Full backward pass (chain rule through computation graph)
+1. Full backward pass (chain rule thru computation graph)
 2. Shape broadcasting for bias addition
 3. More activation functions (tanh, sigmoid, GELU)
 4. Proper Adam bias correction (needs pow/sqrt in Spirix)
@@ -156,7 +156,7 @@ Compares CPU vs GPU matmul performance.
 LD_LIBRARY_PATH=gpu/hip cargo run --release --example train_simple_nn
 ```
 
-Demonstrates forward pass through multi-layer network.
+Demonstrates forward pass thru multi-layer network.
 
 ---
 

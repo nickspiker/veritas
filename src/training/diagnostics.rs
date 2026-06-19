@@ -5,7 +5,7 @@
 //! ✓ Pure counting (no percentages, no division)
 //! ✓ Spirix state probing
 //!
-//! Tracks network health through pure counts.
+//! Tracks network health thru pure counts.
 
 use spirix::ScalarF4E4;
 

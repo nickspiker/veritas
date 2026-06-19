@@ -7,7 +7,7 @@ This document details the important discoveries made during the development of t
 ### Discovery: Two's Complement Provides Natural Gradient Stability
 
 **Observation:**
-- RNN training with BPTT through 14+ timesteps converged without gradient clipping
+- RNN training with BPTT thru 14+ timesteps converged without gradient clipping
 - No manual intervention needed for vanishing/exploding gradients
 - 75% accuracy on dozenal addition proves deep backpropagation works
 
@@ -24,7 +24,7 @@ In Spirix two's complement:
 - No NaN states (all values valid, no corruption)
 
 **Implication:**
-Networks can learn through longer sequences without the fragility of IEEE-754. The gradient might become very small, but it never becomes *exactly* zero and loses direction.
+Networks can learn thru longer sequences without the fragility of IEEE-754. The gradient might become very small, but it never becomes *exactly* zero and loses direction.
 
 **Code Evidence:**
 ```rust

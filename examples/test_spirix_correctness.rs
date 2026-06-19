@@ -153,14 +153,14 @@ fn test_undefined_handling() {
     let result = undefined + five;
     println!("  undefined + 5 = {:?}", result);
     if is_undefined(result) {
-        println!("  ✓ Undefined propagates through addition");
+        println!("  ✓ Undefined propagates thru addition");
     }
 
     // Undefined * anything = undefined
     let result = undefined * five;
     println!("  undefined * 5 = {:?}", result);
     if is_undefined(result) {
-        println!("  ✓ Undefined propagates through multiplication");
+        println!("  ✓ Undefined propagates thru multiplication");
     }
 
     // Tensor with undefined

@@ -58,7 +58,7 @@ Verified boundary conditions and state transitions:
 #### State Preservation:
 - ✓ Transpose preserves exploded
 - ✓ Transpose preserves vanished
-- ✓ All states valid through all operations
+- ✓ All states valid thru all operations
 
 #### Mixed Edge Cases:
 - ✓ Matmul with mixed magnitudes
@@ -98,7 +98,7 @@ All tensor operations obey:
 - Undefined propagation (undefined spreads correctly, doesn't infect unrelated elements)
 
 ### No IEEE-754 Contamination ✓
-- Pure Spirix `ScalarF4E4` throughout entire stack
+- Pure Spirix `ScalarF4E4` thruout entire stack
 - No float literals (1.0, 0.5, etc.)
 - No f64/f32 types anywhere
 - Integer division only: `ScalarF4E4::ONE / ScalarF4E4::from(100u8)`

@@ -102,7 +102,7 @@ cargo run --example gpu_final_showdown
 ✗ All look identical - error cause lost!
 
 ### 2. First Cause Tracking
-**Spirix**: Undefined origin preserved through operations
+**Spirix**: Undefined origin preserved thru operations
 ```rust
 let undef = 0/0;  // ℘ ⬇/⬇ (0b1110100100000000)
 let r1 = undef + 1;  // Still ℘ ⬇/⬇ (0b1110100100000000)
